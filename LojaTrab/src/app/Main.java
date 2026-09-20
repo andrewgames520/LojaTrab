@@ -1,9 +1,17 @@
 package app;
 
+import controller.ProdutoController;
+import repository.ProdutosRepository;
+import view.ProdutoView;
+
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	ProdutoView produtoView = new ProdutoView();
+	ProdutosRepository produtoRepository = ProdutosRepository.getInstance();
+	ProdutoController produtoController = new ProdutoController(produtoView, produtoRepository);
+	produtoView.setVisible(true);
+	System.out.println("teste");
 
 	}
 

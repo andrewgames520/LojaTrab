@@ -4,15 +4,21 @@ import java.time.LocalDate;
 
 public class PagamentoCartao extends FormaPagamento {
 
-	public PagamentoCartao(String pagante, Double total, LocalDate dataPagamento) {
-		super(pagante, total, dataPagamento);
+	public PagamentoCartao(Double total, LocalDate dataPagamento) {
+		super(total, dataPagamento);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Double CalcularTaxaOuDesconto() {
-		// TODO Auto-generated method stub
+
 		return null;
+	}
+
+	@Override
+	public void Processar() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

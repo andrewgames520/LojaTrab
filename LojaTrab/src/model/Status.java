@@ -1,6 +1,6 @@
 package model;
 
-public enum StatusPagamento {
+public enum Status {
 	PENDENTE,
 	CONCLUIDO,
 	CANCELADO;
