@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
@@ -13,6 +14,8 @@ import model.FaixaEtaria;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 public class ProdutoView extends JFrame {
 
@@ -20,16 +23,16 @@ public class ProdutoView extends JFrame {
 	private JPanel contentPane;
 	private JTextField nomeField;
 	private JTextField IdField;
-	private JTextField qntDisponivelField;
 	private JTextField valorField;
 	private JLabel descricaoLabel;
 	private JTextField descricaoField;
-	private JTable produtoTable;
-	private JButton cadastrarButton;
+	private JButton salvarButton;
 	private JButton excluirButton;
 	private JButton limparButton;
-	private JButton atualizarButton;
 	private JComboBox faixaEtariaBox;
+	private JSpinner qntSpinner;
+	private JTable produtoTable;
+	private DefaultTableModel produtoTableModel;
 
 	/**
 	 * Launch the application.
@@ -62,7 +65,7 @@ public class ProdutoView extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel nomeLabel = new JLabel("Nome do produto:");
-		nomeLabel.setBounds(10, 71, 89, 14);
+		nomeLabel.setBounds(10, 71, 103, 14);
 		contentPane.add(nomeLabel);
 		
 		nomeField = new JTextField();
@@ -83,11 +86,6 @@ public class ProdutoView extends JFrame {
 		IdField.setBounds(33, 27, 23, 14);
 		contentPane.add(IdField);
 		IdField.setColumns(10);
-		
-		qntDisponivelField = new JTextField();
-		qntDisponivelField.setBounds(146, 109, 76, 20);
-		contentPane.add(qntDisponivelField);
-		qntDisponivelField.setColumns(10);
 		
 		JLabel faixaEtariaLabel = new JLabel("Faixa Etaria:");
 		faixaEtariaLabel.setBounds(10, 157, 61, 14);
@@ -117,34 +115,52 @@ public class ProdutoView extends JFrame {
 		faixaEtariaBox.setBounds(81, 153, 141, 22);
 		contentPane.add(faixaEtariaBox);
 		
-		cadastrarButton = new JButton("Cadastrar");
-		cadastrarButton.setBounds(10, 275, 89, 23);
-		contentPane.add(cadastrarButton);
+		salvarButton = new JButton("Salvar");
+		salvarButton.setBounds(10, 275, 103, 23);
+		contentPane.add(salvarButton);
 		
 		excluirButton = new JButton("Excluir");
-		excluirButton.setBounds(123, 275, 89, 23);
+		excluirButton.setBounds(123, 275, 99, 23);
 		contentPane.add(excluirButton);
 		
-		atualizarButton = new JButton("Atualizar");
-		atualizarButton.setBounds(242, 275, 89, 23);
-		contentPane.add(atualizarButton);
-		
 		limparButton = new JButton("Limpar campos");
-		limparButton.setBounds(341, 275, 109, 23);
+		limparButton.setBounds(232, 275, 123, 23);
 		contentPane.add(limparButton);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 309, 774, 191);
 		contentPane.add(scrollPane);
 		
-		produtoTable = new JTable();
+		produtoTableModel = new DefaultTableModel(new Object[]{"ID","Produto","Quantidade Disponivel","Faixa etaria","Valor","Descrição"},0) {
+			@Override
+			public boolean isCellEditable(int linha, int coluna) {
+				return false;
+			}
+		};
+		produtoTable = new JTable(produtoTableModel);
 		scrollPane.setViewportView(produtoTable);
+		
+		produtoTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+		produtoTable.getTableHeader().setReorderingAllowed(false);
+		
+		qntSpinner = new JSpinner();
+		qntSpinner.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+		qntSpinner.setBounds(146, 109, 61, 20);
+		contentPane.add(qntSpinner);
 		
 		//this.getExcluirButton().addActionListener(e-> System.out.println("teste"));
 
 	}
 	
 	
+	public DefaultTableModel getProdutoTableModel() {
+		return produtoTableModel;
+	}
+
+	public void setProdutoTableModel(DefaultTableModel produtoTableModel) {
+		this.produtoTableModel = produtoTableModel;
+	}
+
 	public JComboBox getFaixaEtariaBox() {
 		return faixaEtariaBox;
 	}
@@ -154,11 +170,11 @@ public class ProdutoView extends JFrame {
 	}
 
 	public JButton getCadastrarButton() {
-		return cadastrarButton;
+		return salvarButton;
 	}
 
 	public void setCadastrarButton(JButton cadastrarButton) {
-		this.cadastrarButton = cadastrarButton;
+		this.salvarButton = cadastrarButton;
 	}
 
 	public JButton getExcluirButton() {
@@ -177,13 +193,6 @@ public class ProdutoView extends JFrame {
 		this.limparButton = limparButton;
 	}
 
-	public JButton getAtualizarButton() {
-		return atualizarButton;
-	}
-
-	public void setAtualizarButton(JButton atualizarButton) {
-		this.atualizarButton = atualizarButton;
-	}
 
 	public JTextField getNomeField() {
 		return nomeField;
@@ -200,13 +209,13 @@ public class ProdutoView extends JFrame {
 	public void setIdField(JTextField idField) {
 		IdField = idField;
 	}
-
-	public JTextField getQntDisponivelField() {
-		return qntDisponivelField;
+	
+	public JSpinner getQntSpinner() {
+		return qntSpinner;
 	}
 
-	public void setQntDisponivelField(JTextField qntDisponivelField) {
-		this.qntDisponivelField = qntDisponivelField;
+	public void setQntSpinner(JSpinner qntSpinner) {
+		this.qntSpinner = qntSpinner;
 	}
 
 	public JTextField getValorField() {
@@ -232,6 +241,4 @@ public class ProdutoView extends JFrame {
 	public void setProdutoTable(JTable produtoTable) {
 		this.produtoTable = produtoTable;
 	}
-	
-	
 }

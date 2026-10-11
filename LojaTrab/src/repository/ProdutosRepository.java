@@ -2,6 +2,7 @@ package repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import model.Produto;
@@ -40,4 +41,19 @@ public class ProdutosRepository implements Repositorio<Produto>{
 		return this.produtos;
 	}
 	
+	public Optional<Produto> filtrar(Predicate<Produto> regra){
+		return this.listarTodos().stream().filter(regra).findFirst();
+	}
+	public Boolean Buscar(Predicate<Produto> regra){
+		
+		Optional<Produto> resultado = getInstance().listarTodos().stream().filter(regra).findFirst();
+		if (resultado.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+	
+	public void atualizar(Produto produto) {
+		this.listarTodos().replaceAll(p-> p.getId() == produto.getId() ? produto : p);
+	}
 }
