@@ -55,9 +55,7 @@ public class ProdutoView extends JFrame {
 	 */
 	public ProdutoView() {
 		setTitle("Cadastro Produto");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 810, 550);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 810, 550);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -148,7 +146,6 @@ public class ProdutoView extends JFrame {
 		qntSpinner.setBounds(146, 109, 61, 20);
 		contentPane.add(qntSpinner);
 		
-		//this.getExcluirButton().addActionListener(e-> System.out.println("teste"));
 
 	}
 	

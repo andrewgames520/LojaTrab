@@ -1,42 +1,144 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.ClienteController;
+import controller.FuncionarioController;
+import controller.ProdutoController;
+import repository.ClientesRepository;
+import repository.FuncionariosRepository;
+import repository.ProdutosRepository;
+
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
 public class MenuView extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    ProdutoView produtoView;
+    ClienteView clienteView;
+    FuncionarioView funcionarioView;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuView frame = new MenuView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    MenuView frame = new MenuView();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Create the frame.
+     */
+    public MenuView() {
+        setTitle("Sistema - Menu Principal");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 758, 570);
+        
+        // ---------------- BARRA DE MENUS ----------------
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar); // Define a barra no topo do JFrame
+
+        // --- 1. ABA CADASTRO ---
+        JMenu mnCadastro = new JMenu("Cadastro");
+        menuBar.add(mnCadastro);
+
+        JMenuItem mntmCadProdutos = new JMenuItem("Produtos");
+        mnCadastro.add(mntmCadProdutos);
+
+        JMenuItem mntmCadCliente = new JMenuItem("Cliente");
+        mnCadastro.add(mntmCadCliente);
+
+        JMenuItem mntmCadFuncionarios = new JMenuItem("Funcionários");
+        mnCadastro.add(mntmCadFuncionarios);
+
+
+        // --- 2. ABA CONSULTAS ---
+        JMenu mnConsultas = new JMenu("Consultas");
+        menuBar.add(mnConsultas);
+
+        JMenuItem mntmConsProdutos = new JMenuItem("Produtos");
+        mnConsultas.add(mntmConsProdutos);
+        JMenuItem mntmConsFuncionarios = new JMenuItem("Funcionários");
+        mnConsultas.add(mntmConsFuncionarios);
+
+
+        // --- 3. ABA MOVIMENTOS ---
+        JMenu mnMovimentos = new JMenu("Movimentos");
+        menuBar.add(mnMovimentos);
+
+        JMenuItem mntmCompra = new JMenuItem("Comprar");
+        mnMovimentos.add(mntmCompra);
+
+        JMenuItem mntmBotaoDecidir = new JMenuItem("Cancelar Compra");
+        mnMovimentos.add(mntmBotaoDecidir);
+		
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+        
+       
+        mntmCadProdutos.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	if(produtoView == null || ! produtoView.isDisplayable()) {
+            		produtoView = new ProdutoView();
+            		ProdutosRepository produtoRepository = ProdutosRepository.getInstance();
+            		ProdutoController produtoController = new ProdutoController(produtoView, produtoRepository);
+            		produtoView.setVisible(true);		
+            	}else {
+            		produtoView.setExtendedState(JFrame.NORMAL);
+            		produtoView.toFront();
+            	}
+                
+            }
+        });
+        
+        mntmCadCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(clienteView == null || ! clienteView.isDisplayable()) {
+					clienteView = new ClienteView();
+					ClientesRepository clientesRepository = ClientesRepository.getInstance();
+					ClienteController clienteController = new ClienteController(clienteView,clientesRepository);
+					clienteView.setVisible(true);					
+				}else {
+					clienteView.setExtendedState(JFrame.NORMAL);
+					clienteView.toFront();
 				}
+				
 			}
 		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public MenuView() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-
-	}
-
+        mntmCadFuncionarios.addActionListener(new ActionListener() {
+		
+			public void actionPerformed(ActionEvent e) {
+				if(funcionarioView == null || ! funcionarioView.isDisplayable()) {
+					
+				funcionarioView = new FuncionarioView();
+				FuncionariosRepository funcionariosRepository = FuncionariosRepository.getInstance();
+				FuncionarioController funcionarioController = new FuncionarioController(funcionarioView,funcionariosRepository);
+				funcionarioView.setVisible(true);
+				}else {
+					funcionarioView.setExtendedState(JFrame.NORMAL);
+					funcionarioView.toFront();
+				}
+				
+			}
+		});
+    }
 }

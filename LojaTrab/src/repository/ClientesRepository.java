@@ -2,6 +2,7 @@ package repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import model.Cliente;
@@ -39,5 +40,21 @@ public class ClientesRepository implements Repositorio<Cliente> {
 	@Override
 	public List<Cliente>listarTodos(){
 		return this.clientes;
+	}
+	
+	public Optional<Cliente> filtrar(Predicate<Cliente> regra){
+		return this.listarTodos().stream().filter(regra).findFirst();
+	}
+	public Boolean Buscar(Predicate<Cliente> regra){
+		
+		Optional<Cliente> resultado = getInstance().listarTodos().stream().filter(regra).findFirst();
+		if (resultado.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+	
+	public void atualizar(Cliente cliente) {
+		this.listarTodos().replaceAll(p-> p.getId() == cliente.getId() ? cliente : p);
 	}
 }

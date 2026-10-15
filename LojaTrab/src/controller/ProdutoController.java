@@ -128,6 +128,7 @@ public class ProdutoController {
 		view.getFaixaEtariaBox().setSelectedIndex(0);
 		view.getValorField().setText("");
 		view.getDescricaoField().setText("");
+		view.getExcluirButton().setEnabled(false);
 		
 	}
 }

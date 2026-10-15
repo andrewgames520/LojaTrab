@@ -1,6 +1,13 @@
 package model;
 
-public class Ocupacao {
-	private Integer Id;
-	private String descricao;
+public enum Ocupacao {
+	CAIXA,
+	ATENDENTE,
+	GERENTE,
+	REPOSITOR,
+	FAIXINEIRO,
+	GUARDA;
+	
+	
+	
 }
