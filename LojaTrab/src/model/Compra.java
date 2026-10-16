@@ -13,6 +13,10 @@ public class Compra {
 	private FormaPagamento pagamento;
 	private Status status;
 	
+	public Compra() {
+		this.status = Status.PENDENTE;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -58,5 +62,13 @@ public class Compra {
 	
 	public boolean possuiProduto(Integer id) {
 		return this.getCompras().stream().anyMatch(i->i.getiD() == id);
+	}
+	
+	public Double calcularTotal() {
+		Double total =0.0;
+		for(ItemCompra i: this.getCompras()) {
+			total += i.getSubTotal();
+		}
+		return total;
 	}
 }

@@ -43,7 +43,7 @@ public class FuncionarioController {
 			view.getExcluirButton().setEnabled(true);
 			int linhaModelo = view.getFuncionariosTable().convertRowIndexToModel(linhaSelecionada);
 			Integer id = (Integer) view.getFuncionariosTable().getValueAt(linhaModelo,0);
-			this.repository.filtrar(p -> p.getId() == id).ifPresent(this::preencherCampos);;
+			this.repository.filtrar(p -> p.getId() == id).ifPresent(this::preencherCampos);
 		}
 	 
 	 public void preencherCampos(Funcionario funcionario) {

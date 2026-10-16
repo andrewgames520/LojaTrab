@@ -3,22 +3,23 @@ package model;
 import java.time.LocalDate;
 
 public class PagamentoCartao extends FormaPagamento {
-
+	private Status statusPagamento;
 	public PagamentoCartao(Double total) {
 		super(total);
-		// TODO Auto-generated constructor stub
+		this.setTotal(total*this.CalcularTaxaOuDesconto());
+		this.statusPagamento = Status.PENDENTE;
+
 	}
 
 	@Override
 	public Double CalcularTaxaOuDesconto() {
-
-		return null;
+		
+		return 1.15;
 	}
 
 	@Override
 	public void Processar() {
-		// TODO Auto-generated method stub
-		
+		this.setStatusPagamento(Status.CONCLUIDO);
 	}
 	
 	

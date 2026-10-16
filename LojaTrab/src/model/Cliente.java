@@ -76,5 +76,13 @@ public class Cliente {
 		return  resultado1 == cpf[9] && resultado2 == cpf[10];
 		
 	}
+
+
+	@Override
+	public String toString() {
+		return nome;
+	}
+	
+	
 	
 }

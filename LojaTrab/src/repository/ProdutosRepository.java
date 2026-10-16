@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import model.ItemCompra;
 import model.Produto;
 
 public class ProdutosRepository implements Repositorio<Produto>{
@@ -55,5 +56,16 @@ public class ProdutosRepository implements Repositorio<Produto>{
 	
 	public void atualizar(Produto produto) {
 		this.listarTodos().replaceAll(p-> p.getId() == produto.getId() ? produto : p);
+	}
+	
+	public void comprarProdutos(List<ItemCompra> comprados) {
+		for (ItemCompra itemCompra : comprados) {
+			this.buscarPorFiltro(p -> p.getId() == itemCompra.getiD()).forEach(p -> p.setQntDisponivel(p.getQntDisponivel()-itemCompra.getQnt()));
+		}
+	}
+	public void devolverProdutos(List<ItemCompra> comprados) {
+		for (ItemCompra itemCompra : comprados) {
+			this.buscarPorFiltro(p -> p.getId() == itemCompra.getiD()).forEach(p -> p.setQntDisponivel(p.getQntDisponivel()+itemCompra.getQnt()));
+		}
 	}
 }

@@ -50,8 +50,6 @@ public class ConsultaProdutoController {
 		Predicate<Produto> intervalo = maior.and(menor);
 		
 		filtro = intervalo;
-		TableRowSorter<DefaultTableModel> ordenar = new TableRowSorter<>(view.getProdutosTableModel());
-		view.getProdutosTable().setRowSorter(ordenar);
 		
 		Predicate<Produto> faixaEtaria;
 		if(faixa.equals("Todas as faixas")) {

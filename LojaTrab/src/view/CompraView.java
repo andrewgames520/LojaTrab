@@ -9,7 +9,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import model.Produto;
+import model.Cliente;
 import model.ItemCompra;
+import repository.ClientesRepository;
 import repository.ProdutosRepository;
 
 import javax.swing.JLabel;
@@ -34,6 +36,8 @@ public class CompraView extends JFrame {
 	private JComboBox pagamentoBox;
 	private JComboBox<Produto> produtoBox;
 	private DefaultComboBoxModel<Produto> produtoBoxModel;
+	private JComboBox<Cliente> clienteBox;
+	private DefaultComboBoxModel<Cliente> clienteBoxModel;
 	private JButton selecionarButton;
 	private JLabel subtotalLabel;
 	private JButton deletarCarrinhoButton;
@@ -62,7 +66,7 @@ public class CompraView extends JFrame {
 	public CompraView() {
 		setTitle("Comprar");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 732, 520);
+		setBounds(100, 100, 732, 700);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,7 +79,6 @@ public class CompraView extends JFrame {
 		produtoBoxModel = new DefaultComboBoxModel<Produto>();
 		produtoBoxModel.addAll(ProdutosRepository.getInstance().listarTodos());
 		produtoBox = new JComboBox<Produto>(produtoBoxModel);
-		System.out.println(produtoBoxModel.getElementAt(0));
 		
 		
 		produtoBox.setBounds(164, 40, 132, 22);
@@ -122,33 +125,46 @@ public class CompraView extends JFrame {
 		contentPane.add(limparButton);
 		
 		deletarCarrinhoButton = new JButton("Deletar carrinho");
-		deletarCarrinhoButton.setBounds(22, 433, 132, 23);
+		deletarCarrinhoButton.setEnabled(false);
+		deletarCarrinhoButton.setBounds(23, 578, 132, 23);
 		contentPane.add(deletarCarrinhoButton);
 		
 		finalizarButton = new JButton("Finalizar Compra");
-		finalizarButton.setBounds(232, 433, 155, 23);
+		finalizarButton.setEnabled(false);
+		finalizarButton.setBounds(233, 578, 155, 23);
 		contentPane.add(finalizarButton);
 		
 		totalLabel = new JLabel("Total Final: R$");
-		totalLabel.setBounds(22, 408, 114, 14);
+		totalLabel.setBounds(23, 553, 154, 14);
 		contentPane.add(totalLabel);
 		
 		JLabel pagamentoLabel = new JLabel("Forma de pagamento");
-		pagamentoLabel.setBounds(22, 383, 116, 14);
+		pagamentoLabel.setBounds(20, 469, 132, 14);
 		contentPane.add(pagamentoLabel);
 		
 		pagamentoBox = new JComboBox();
 		pagamentoBox.setModel(new DefaultComboBoxModel(new String[] {"Cartão", "Pix"}));
-		pagamentoBox.setBounds(148, 379, 101, 22);
+		pagamentoBox.setBounds(146, 465, 101, 22);
 		contentPane.add(pagamentoBox);
 		
 		subtotalLabel = new JLabel("SubTotal R$:");
-		subtotalLabel.setBounds(611, 371, 95, 14);
+		subtotalLabel.setBounds(575, 371, 131, 14);
 		contentPane.add(subtotalLabel);
 		
-		selecionarButton = new JButton("Selecionar forma\r\n de pagamento");
-		selecionarButton.setBounds(280, 379, 197, 22);
+		selecionarButton = new JButton("Confirmar dados");
+		selecionarButton.setBounds(10, 509, 197, 22);
 		contentPane.add(selecionarButton);
+		
+		JLabel clienteLabel = new JLabel("Selecione o cliente:");
+		clienteLabel.setBounds(10, 417, 116, 14);
+		contentPane.add(clienteLabel);
+		
+		clienteBoxModel = new DefaultComboBoxModel<Cliente>();
+		clienteBoxModel.addAll(ClientesRepository.getInstance().listarTodos());
+		
+		clienteBox = new JComboBox<Cliente>(clienteBoxModel);
+		clienteBox.setBounds(136, 413, 126, 22);
+		contentPane.add(clienteBox);
 
 	}
 	public JLabel getTotalLabel() {
@@ -203,6 +219,9 @@ public class CompraView extends JFrame {
 
 	public JButton getFinalizarButton() {
 		return finalizarButton;
+	}
+	public JComboBox getClienteBox() {
+		return clienteBox;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package model;
 
-import java.util.function.Function;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class ItemCompra {
 	private Integer iD;
@@ -41,7 +42,8 @@ public class ItemCompra {
 	}
 	
 	public Double calcularTotal() {
-		return this.valorUnit * this.qnt;
+		BigDecimal bd = new BigDecimal(Double.toString(this.getValorUnit() * this.getQnt()));
+		return bd.setScale(2, RoundingMode.HALF_UP).doubleValue();
 	}
 
 	

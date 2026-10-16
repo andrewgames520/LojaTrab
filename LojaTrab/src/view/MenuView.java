@@ -8,8 +8,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.CancelarCompraController;
 import controller.ClienteController;
 import controller.CompraController;
+import controller.ConsultaCompraController;
 import controller.ConsultaFuncionarioController;
 import controller.ConsultaProdutoController;
 import controller.FuncionarioController;
@@ -32,7 +34,9 @@ public class MenuView extends JFrame {
     FuncionarioView funcionarioView;
     ConsultaProdutoView consultaProdutoView;
     ConsultaFuncionarioView consultafuncionarioView;
+    ConsultaCompraView consultaCompraView;
     CompraView compraView;
+    CancelarCompraView cancelarView;
 
     /**
      * Launch the application.
@@ -84,6 +88,8 @@ public class MenuView extends JFrame {
         mnConsultas.add(mntmConsProdutos);
         JMenuItem mntmConsFuncionarios = new JMenuItem("Funcionários");
         mnConsultas.add(mntmConsFuncionarios);
+        JMenuItem mntmConsCompras = new JMenuItem("Histórico Compras");
+        mnConsultas.add(mntmConsCompras);
 
 
         // --- 3. ABA MOVIMENTOS ---
@@ -93,8 +99,8 @@ public class MenuView extends JFrame {
         JMenuItem mntmCompra = new JMenuItem("Comprar");
         mnMovimentos.add(mntmCompra);
 
-        JMenuItem mntmBotaoDecidir = new JMenuItem("Cancelar Compra");
-        mnMovimentos.add(mntmBotaoDecidir);
+        JMenuItem mntmCancelar = new JMenuItem("Cancelar Compra");
+        mnMovimentos.add(mntmCancelar);
 		
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -148,6 +154,21 @@ public class MenuView extends JFrame {
 			}
 		});
         
+        mntmConsCompras.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(consultaCompraView == null || ! consultaCompraView.isDisplayable()) {
+					consultaCompraView = new ConsultaCompraView();
+					ConsultaCompraController consultaCompraController = new ConsultaCompraController(consultaCompraView);
+					consultaCompraView.setVisible(true);
+				}else{
+					consultaCompraView.setExtendedState(JFrame.NORMAL);
+					consultaProdutoView.toFront();
+				}
+			}
+		});
+        
         mntmConsProdutos.addActionListener(new ActionListener() {
 			
 			@Override
@@ -195,5 +216,22 @@ public class MenuView extends JFrame {
     		   	}
     		  }
     	   });
+       
+       mntmCancelar.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+				if(cancelarView == null || ! cancelarView.isDisplayable()) {
+					cancelarView = new CancelarCompraView();
+					CancelarCompraController cancelarCompraController = new CancelarCompraController(cancelarView);
+					cancelarView.setVisible(true);
+				}else {
+					cancelarView.setExtendedState(JFrame.NORMAL);
+					cancelarView.toFront();
+				}
+			}
+			
+       });
+	
     }
 }

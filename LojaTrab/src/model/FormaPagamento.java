@@ -19,4 +19,22 @@ public abstract class FormaPagamento {
 	public abstract Double CalcularTaxaOuDesconto();
 	
 	public abstract void Processar();
+
+	public Double getTotal() {
+		return Total;
+	}
+
+	public Status getStatusPagamento() {
+		return statusPagamento;
+	}
+
+	public void setTotal(Double total) {
+		Total = total;
+	}
+
+	public void setStatusPagamento(Status statusPagamento) {
+		this.statusPagamento = statusPagamento;
+	}
+	
+	
 }

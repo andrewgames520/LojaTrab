@@ -1,13 +1,19 @@
 package controller;
 
+import java.time.LocalDate;
 import java.util.function.Function;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import model.Cliente;
 import model.Compra;
+import model.FormaPagamento;
 import model.ItemCompra;
+import model.PagamentoCartao;
+import model.PagamentoPix;
 import model.Produto;
+import model.Status;
 import repository.ComprasRepository;
 import repository.ProdutosRepository;
 import utils.Erros;
@@ -29,6 +35,10 @@ public class CompraController {
 		 view.getSalvarButton().addActionListener(e->salvarItem());
 		 view.getExcluirCarrinhoButton().addActionListener(e->excluirItem());
 		 view.getLimparButton().addActionListener(e->limparCampos());
+		 view.getDeletarCarrinhoButton().addActionListener(e->deletarCarrinho());
+		 view.getSelecionarButton().addActionListener(e -> calcularTotal());
+		 view.getFinalizarButton().addActionListener(e -> finalizarCompra());
+		// view.getClienteButton().addActionListener(e-> );
 		 view.getCarrinhoTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
@@ -74,14 +84,15 @@ public class CompraController {
 			 itemCompra.setSubTotal(itemCompra.calcularTotal());
 			if(compraAtual.possuiProduto(itemCompra.getiD())) {
 				compraAtual.getCompras().stream().filter(i -> i.getiD() == itemCompra.getiD()).forEach(i ->{
-					i.setQnt(qnt + i.getQnt());
+					i.setQnt(qnt);
 					i.setSubTotal(i.calcularTotal());
 				});
 			}else {
 				compraAtual.getCompras().add(itemCompra);				
 			}
-			Double total =0.;
-			compraAtual.getCompras().forEach(i -> total += i.getSubTotal());
+			view.getSubtotalLabel().setText("SubTotal: R$ " +  compraAtual.calcularTotal());
+			view.getDeletarCarrinhoButton().setEnabled(true);
+			view.getFinalizarButton().setEnabled(true);
 			 montarTabela();
 			 limparCampos();
 	 }
@@ -89,13 +100,18 @@ public class CompraController {
 	 public void excluirItem() {
 			Produto produto= (Produto)view.getProdutoBox().getSelectedItem();
 			compraAtual.getCompras().removeIf(i-> i.getiD() == produto.getId());
+			view.getSubtotalLabel().setText("SubTotal R$: " +  compraAtual.calcularTotal());
+			if(compraAtual.getCompras().isEmpty()) {
+				view.getDeletarCarrinhoButton().setEnabled(false);
+				view.getFinalizarButton().setEnabled(false);
+			}
 			limparCampos();
 			montarTabela();
 		 }
 		 
 		 public void montarTabela() {
 				view.getCarrinhoTableModel().setRowCount(0);
-				for(ItemCompra i : compraAtual.getCompras()) {
+				for(ItemCompra i : compraAtual.getCompras().stream().sorted((i1,i2) -> Double.compare(i2.getSubTotal(),i1.getSubTotal())).toList()) {
 					view.getCarrinhoTableModel().addRow(new Object[] {
 							i.getiD(),
 							i.getNome(),
@@ -110,5 +126,52 @@ public class CompraController {
 			 view.getQntSpinner().setValue(1);
 			 view.getExcluirCarrinhoButton().setEnabled(false);
 		 }
+		 
+		 public void deletarCarrinho() {
+			 compraAtual.getCompras().clear();
+			 montarTabela();
+			 view.getSubtotalLabel().setText(("SubTotal: R$"));
+			 view.getTotalLabel().setText("Total Final: R$");
+			 view.getPagamentoBox().setSelectedIndex(-1);
+			 view.getClienteBox().setSelectedIndex(0);
+			 view.getDeletarCarrinhoButton().setEnabled(false);
+		 }
 	
+		 public void calcularTotal() {
+			 FormaPagamento pagamento;
+			 if(view.getPagamentoBox().getSelectedItem().equals("Cartão")) {
+				 pagamento = new PagamentoCartao(compraAtual.calcularTotal());
+			 }else if(view.getPagamentoBox().getSelectedItem().equals("Pix")){
+				 pagamento = new PagamentoPix(compraAtual.calcularTotal());
+			 }else {
+				 Erros.mostrarErro("Selecione uma forma de pagamento", view);
+				 return;
+			 }
+			 view.getTotalLabel().setText("Total Final: R$ " + pagamento.getTotal());
+			 compraAtual.setPagamento(pagamento);
+		 }
+		 
+		 public void finalizarCompra() {
+			 Cliente cliente = (Cliente) view.getClienteBox().getSelectedItem();
+			 compraAtual.getPagamento().Processar();
+			 if(cliente == null) {
+				 Erros.mostrarErro("Selecione um cliente", view);
+				 return;
+			 }
+			 compraAtual.setCliente(cliente);
+			 compraAtual.setTotal(compraAtual.getPagamento().getTotal());
+			 compraAtual.setDataCompra(LocalDate.now());
+			 ProdutosRepository.getInstance().comprarProdutos(compraAtual.getCompras());
+			 
+			 repository.adicionar(compraAtual);
+			 this.compraAtual = new Compra();
+			 montarTabela();
+			 view.getSubtotalLabel().setText("SubTotal: R$ 0.0");
+			 view.getTotalLabel().setText("Total Final: R$ 0.0");
+			 view.getPagamentoBox().setSelectedIndex(-1);
+			 view.getClienteBox().setSelectedIndex(0);
+			 view.getDeletarCarrinhoButton().setEnabled(false);
+			 view.getFinalizarButton().setEnabled(false);
+			 
+		 }
 }
