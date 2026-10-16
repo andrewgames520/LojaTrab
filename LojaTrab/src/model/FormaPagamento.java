@@ -4,13 +4,11 @@ import java.time.LocalDate;
 
 public abstract class FormaPagamento {
 	private Double Total;
-	private LocalDate dataPagamento;
 	private Status statusPagamento;
 	
-	public FormaPagamento(Double total, LocalDate dataPagamento) {
+	public FormaPagamento(Double total) {
 		super();
 		Total = total;
-		this.dataPagamento = dataPagamento;
 		this.statusPagamento = Status.PENDENTE;
 	}
 	

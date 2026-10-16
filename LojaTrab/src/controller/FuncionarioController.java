@@ -21,21 +21,21 @@ public class FuncionarioController {
 	 }
 	 
 	 public void configurarEventos() {
-		 view.getSalvarButton().addActionListener(e->salvarCliente());
-		 view.getExcluirButton().addActionListener(e->excluirCliente());
+		 view.getSalvarButton().addActionListener(e->salvarFuncionario());
+		 view.getExcluirButton().addActionListener(e->excluirFuncionario());
 		 view.getLimparButton().addActionListener(e->limparCampos());
 		 view.getFuncionariosTable().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				carregarClienteSelecionado();
+				carregarFuncionarioSelecionado();
 				
 			}
 		});
 		 montarTabela();
 	 }
 	 
-	 public void carregarClienteSelecionado() {
+	 public void carregarFuncionarioSelecionado() {
 		 int linhaSelecionada = view.getFuncionariosTable().getSelectedRow();
 			if(linhaSelecionada == -1) {
 				return;
@@ -54,7 +54,7 @@ public class FuncionarioController {
 		 view.getOcupacaoBox().setSelectedItem(funcionario.getOcupacao());
 	 }
 	 
-	 public void salvarCliente() {
+	 public void salvarFuncionario() {
 		 Double salario;
 		 String id = view.getIdField().getText();
 		 String nome = view.getNomeField().getText();
@@ -64,6 +64,7 @@ public class FuncionarioController {
 			 salario = Double.parseDouble(view.getSalarioField().getText());
 			 if(salario <= 1621) {
 				 Erros.mostrarErro("O salário minimo é de R$: 1621", view);
+				 return;
 			 }
 		 }catch(Exception e) {
 			 Erros.mostrarErro("Campo salario inválido", view);
@@ -92,7 +93,7 @@ public class FuncionarioController {
 		 limparCampos();
 	 }
 	 
-	 public void excluirCliente() {
+	 public void excluirFuncionario() {
 		String id = view.getIdField().getText();
 		repository.remover(Integer.parseInt(id));
 		limparCampos();

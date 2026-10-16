@@ -9,9 +9,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.ClienteController;
+import controller.CompraController;
+import controller.ConsultaFuncionarioController;
+import controller.ConsultaProdutoController;
 import controller.FuncionarioController;
 import controller.ProdutoController;
 import repository.ClientesRepository;
+import repository.ComprasRepository;
 import repository.FuncionariosRepository;
 import repository.ProdutosRepository;
 
@@ -26,6 +30,9 @@ public class MenuView extends JFrame {
     ProdutoView produtoView;
     ClienteView clienteView;
     FuncionarioView funcionarioView;
+    ConsultaProdutoView consultaProdutoView;
+    ConsultaFuncionarioView consultafuncionarioView;
+    CompraView compraView;
 
     /**
      * Launch the application.
@@ -47,7 +54,7 @@ public class MenuView extends JFrame {
      * Create the frame.
      */
     public MenuView() {
-        setTitle("Sistema - Menu Principal");
+        setTitle("Menu Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 758, 570);
         
@@ -140,5 +147,53 @@ public class MenuView extends JFrame {
 				
 			}
 		});
+        
+        mntmConsProdutos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(consultaProdutoView == null || !consultaProdutoView.isDisplayable()) {
+					consultaProdutoView = new ConsultaProdutoView();
+					ConsultaProdutoController consultaProdutoController = new ConsultaProdutoController(consultaProdutoView);
+					consultaProdutoView.setVisible(true);
+				}else {
+					consultaProdutoView.setExtendedState(JFrame.NORMAL);
+					consultaProdutoView.toFront();
+				}
+				
+			}
+		});
+        
+        mntmConsFuncionarios.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(consultafuncionarioView == null || ! consultafuncionarioView.isDisplayable()) {
+					consultafuncionarioView = new ConsultaFuncionarioView();
+					ConsultaFuncionarioController consultaFuncionarioController = new ConsultaFuncionarioController(consultafuncionarioView);
+					consultafuncionarioView.setVisible(true);
+				}else {
+					consultafuncionarioView.setExtendedState(JFrame.NORMAL);
+					consultaProdutoView.toFront();
+				}
+				
+			}
+		});
+        
+       mntmCompra.addActionListener(new ActionListener(){
+    
+    	   @Override
+    	   public void actionPerformed(ActionEvent e) {
+    		   	if(compraView == null || ! compraView.isDisplayable()) {
+    			   compraView = new CompraView();
+    			   ComprasRepository compraRepository = ComprasRepository.getInstance();
+    			   CompraController compraController = new CompraController(compraView, compraRepository);
+    			   compraView.setVisible(true);
+    		   	}else {
+    		   		compraView.setExtendedState(JFrame.NORMAL);
+    		   		compraView.toFront();
+    		   	}
+    		  }
+    	   });
     }
 }

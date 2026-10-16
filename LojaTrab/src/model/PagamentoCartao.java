@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public class PagamentoCartao extends FormaPagamento {
 
-	public PagamentoCartao(Double total, LocalDate dataPagamento) {
-		super(total, dataPagamento);
+	public PagamentoCartao(Double total) {
+		super(total);
 		// TODO Auto-generated constructor stub
 	}
 

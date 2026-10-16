@@ -18,6 +18,13 @@ public enum FaixaEtaria {
 	}
 	
 	
-	
+	public static FaixaEtaria porRotulo(String rotulo) {
+		for (FaixaEtaria faixa : FaixaEtaria.values()) {
+			if(faixa.getRotulo().equals(rotulo)) {
+				return faixa;
+			}
+		}
+		return null;
+	}
 	
 }

@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public class PagamentoPix extends FormaPagamento {
 
-	public PagamentoPix(Double total, LocalDate dataPagamento) {
-		super(total, dataPagamento);
+	public PagamentoPix(Double total) {
+		super(total);
 	}
 
 	@Override

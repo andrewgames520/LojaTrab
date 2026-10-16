@@ -70,6 +70,8 @@ public class Produto {
 		this.faixaEtaria = faixaEtaria;
 	}
 	
-	
+	public String toString() {
+		return this.getNome();
+	}
 	
 }
